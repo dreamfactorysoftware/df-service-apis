@@ -1,0 +1,231 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "2.0",
+		"title": "Math Service"
+	},
+	"paths": {
+		"/": {
+			"get": {
+				"description": "Resources available to this service.",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/MathResourceList"
+						}
+					},
+					"default": {
+						"description": "Error",
+						"schema": {
+							"$ref": "#/definitions/MathError"
+						}
+					}
+				}
+			}
+		},
+		"/add": {
+			"get": {
+				"description": "Add two integers.",
+				"parameters": [
+					{
+						"name": "n1",
+						"in": "query",
+						"description": "First number",
+						"required": true,
+						"type": "number",
+						"format": "integer"
+					},
+					{
+						"name": "n2",
+						"in": "query",
+						"description": "Second number",
+						"required": true,
+						"type": "number",
+						"format": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/MathSuccess"
+						}
+					},
+					"default": {
+						"description": "Error",
+						"schema": {
+							"$ref": "#/definitions/MathError"
+						}
+					}
+				}
+			}
+		},
+		"/divide": {
+			"get": {
+				"description": "Divide two integers.",
+				"parameters": [
+					{
+						"name": "n1",
+						"in": "query",
+						"description": "First number",
+						"required": true,
+						"type": "number",
+						"format": "integer"
+					},
+					{
+						"name": "n2",
+						"in": "query",
+						"description": "Second number",
+						"required": true,
+						"type": "number",
+						"format": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/MathSuccess"
+						}
+					},
+					"default": {
+						"description": "Error",
+						"schema": {
+							"$ref": "#/definitions/MathError"
+						}
+					}
+				}
+			}
+		},
+		"/multiply": {
+			"get": {
+				"description": "Multiply two integers.",
+				"parameters": [
+					{
+						"name": "n1",
+						"in": "query",
+						"description": "First number",
+						"required": true,
+						"type": "number",
+						"format": "integer"
+					},
+					{
+						"name": "n2",
+						"in": "query",
+						"description": "Second number",
+						"required": true,
+						"type": "number",
+						"format": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/MathSuccess"
+						}
+					},
+					"default": {
+						"description": "Error",
+						"schema": {
+							"$ref": "#/definitions/MathError"
+						}
+					}
+				}
+			}
+		},
+		"/subtract": {
+			"get": {
+				"description": "Subtract two integers.",
+				"parameters": [
+					{
+						"name": "n1",
+						"in": "query",
+						"description": "First number",
+						"required": true,
+						"type": "number",
+						"format": "integer"
+					},
+					{
+						"name": "n2",
+						"in": "query",
+						"description": "Second number",
+						"required": true,
+						"type": "number",
+						"format": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/MathSuccess"
+						}
+					},
+					"default": {
+						"description": "Error",
+						"schema": {
+							"$ref": "#/definitions/MathError"
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"MathResourceList": {
+			"type": "object",
+			"properties": {
+				"resource": {
+					"type": "array",
+					"description": "Array of accessible resources available to this service.",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"MathSuccess": {
+			"type": "object",
+			"properties": {
+				"result": {
+					"type": "integer"
+				}
+			}
+		},
+		"MathError": {
+			"type": "object",
+			"properties": {
+				"code": {
+					"type": "integer",
+					"format": "int32",
+					"description": "Error code."
+				},
+				"message": {
+					"type": "string",
+					"description": "String description of the error."
+				}
+			}
+		}
+	},
+	"parameters": {
+		"n1": {
+			"name": "n1",
+			"in": "query",
+			"description": "First number",
+			"required": true,
+			"type": "number",
+			"format": "integer"
+		},
+		"n2": {
+			"name": "n2",
+			"in": "query",
+			"description": "Second number",
+			"required": true,
+			"type": "number",
+			"format": "integer"
+		}
+	}
+}
