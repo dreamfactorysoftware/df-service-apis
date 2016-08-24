@@ -1,0 +1,656 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Services for forward and reverse geocoding",
+    "version" : "v1",
+    "title" : "MapQuest Geocoding API"
+  },
+  "schemes" : [ "http" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/address" : {
+      "get" : {
+        "tags" : [ "Address" ],
+        "summary" : "Address Geocode",
+        "description" : "The address geocoding service enables you to take an address and get the associated latitude and longitude.",
+        "parameters" : [ {
+          "name" : "key",
+          "in" : "query",
+          "description" : "The Application Key, which is needed to make requests to MapQuest services.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "location",
+          "in" : "query",
+          "description" : "The location to geocode",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "boundingBox",
+          "in" : "query",
+          "description" : "When using batch geocoding or when ambiguous results are returned, any results within the provided bounding box will be moved to the top of the results list. Bounding box format is: upper left latitude, upper left longitude, lower right latitude, lower right longitude.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ignoreLatLngInput",
+          "in" : "query",
+          "description" : "This option tells the service whether it should fail when given a latitude/longitude pair in an address or batch geocode call, or if it should ignore that and try and geocode what it can. Default = false.",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "thumbMaps",
+          "in" : "query",
+          "description" : "This parameter tells the service whether it should return a URL to a static map thumbnail image for a location being geocoded. Default = true.",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "maxResults",
+          "in" : "query",
+          "description" : "The max number of locations to return from the batch geocode",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "outFormat",
+          "in" : "query",
+          "description" : "Specifies the format of the response. Defaults to json if not supplied",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "json", "xml", "csv" ]
+        }, {
+          "name" : "delimiter",
+          "in" : "query",
+          "description" : "Specifies the delimiter used in the csv response. Default is none. This option will only have an effect if outFormat=csv.",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "Comma", "Pipe", "Colon", "Semicolon" ]
+        }, {
+          "name" : "intlMode",
+          "in" : "query",
+          "description" : "Allows users of the International Geocoder to tell MapQuest how to handle a 5-box geocode. Default = AUTO.",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "5BOX", "1BOX", "AUTO" ]
+        }, {
+          "name" : "callback",
+          "in" : "query",
+          "description" : "A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Response",
+            "schema" : {
+              "$ref" : "#/definitions/AddressResponse"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Address" ],
+        "summary" : "Address Geocode",
+        "description" : "The address geocoding service enables you to take an address and get the associated latitude and longitude.",
+        "parameters" : [ {
+          "name" : "key",
+          "in" : "query",
+          "description" : "The Application Key, which is needed to make requests to MapQuest services.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "outFormat",
+          "in" : "query",
+          "description" : "Specifies the format of the response. Defaults to json if not supplied",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "json", "xml", "csv" ]
+        }, {
+          "name" : "callback",
+          "in" : "query",
+          "description" : "A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "The location to geocode",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/AddressRequestBody"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Response",
+            "schema" : {
+              "$ref" : "#/definitions/AddressResponse"
+            }
+          }
+        }
+      }
+    },
+    "/batch" : {
+      "get" : {
+        "tags" : [ "Batch" ],
+        "summary" : "Batch Geocode",
+        "description" : "The batch geocoding service allows multiple locations to be geocoded at the same time.",
+        "parameters" : [ {
+          "name" : "key",
+          "in" : "query",
+          "description" : "The Application Key, which is needed to make requests to MapQuest services.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "location",
+          "in" : "query",
+          "description" : "The location to geocode. A limit of 100 locations exists for one call.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "boundingBox",
+          "in" : "query",
+          "description" : "When using batch geocoding or when ambiguous results are returned, any results within the provided bounding box will be moved to the top of the results list. Bounding box format is: upper left latitude, upper left longitude, lower right latitude, lower right longitude.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ignoreLatLngInput",
+          "in" : "query",
+          "description" : "This option tells the service whether it should fail when given a latitude/longitude pair in an address or batch geocode call, or if it should ignore that and try and geocode what it can. Default = false.",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "thumbMaps",
+          "in" : "query",
+          "description" : "This parameter tells the service whether it should return a URL to a static map thumbnail image for a location being geocoded. Default = true.",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "maxResults",
+          "in" : "query",
+          "description" : "The max number of locations to return from the batch geocode",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "outFormat",
+          "in" : "query",
+          "description" : "Specifies the format of the response. Defaults to json if not supplied",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "json", "xml", "csv" ]
+        }, {
+          "name" : "delimiter",
+          "in" : "query",
+          "description" : "Specifies the delimiter used in the csv response. Default is none. This option will only have an effect if outFormat=csv.",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "Comma", "Pipe", "Colon", "Semicolon" ]
+        }, {
+          "name" : "callback",
+          "in" : "query",
+          "description" : "A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Response",
+            "schema" : {
+              "$ref" : "#/definitions/AddressResponse"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Batch" ],
+        "summary" : "Batch Geocode",
+        "description" : "The batch geocoding service allows multiple locations to be geocoded at the same time.",
+        "parameters" : [ {
+          "name" : "key",
+          "in" : "query",
+          "description" : "The Application Key, which is needed to make requests to MapQuest services.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "boundingBox",
+          "in" : "query",
+          "description" : "When using batch geocoding or when ambiguous results are returned, any results within the provided bounding box will be moved to the top of the results list. Bounding box format is: upper left latitude, upper left longitude, lower right latitude, lower right longitude.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "outFormat",
+          "in" : "query",
+          "description" : "Specifies the format of the response. Defaults to json if not supplied",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "json", "xml", "csv" ]
+        }, {
+          "name" : "callback",
+          "in" : "query",
+          "description" : "A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "The list of locations to geocode",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/BatchRequestBody"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Response",
+            "schema" : {
+              "$ref" : "#/definitions/AddressResponse"
+            }
+          }
+        }
+      }
+    },
+    "/reverse" : {
+      "get" : {
+        "tags" : [ "Reverse" ],
+        "summary" : "Reverse Geocode",
+        "description" : "The reverse geocoding service allows a latitude and longitude to be converted to a location.",
+        "parameters" : [ {
+          "name" : "key",
+          "in" : "query",
+          "description" : "The Application Key, which is needed to make requests to MapQuest services.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "location",
+          "in" : "query",
+          "description" : "The latitude,longitude of the point to reverse geocode",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "thumbMaps",
+          "in" : "query",
+          "description" : "This parameter tells the service whether it should return a URL to a static map thumbnail image for a location being geocoded. Default = true.",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "outFormat",
+          "in" : "query",
+          "description" : "Specifies the format of the response. Defaults to json if not supplied",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "json", "xml", "csv" ]
+        }, {
+          "name" : "delimiter",
+          "in" : "query",
+          "description" : "Specifies the delimiter used in the csv response. Default is none. This option will only have an effect if outFormat=csv.",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "Comma", "Pipe", "Colon", "Semicolon" ]
+        }, {
+          "name" : "callback",
+          "in" : "query",
+          "description" : "A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Response",
+            "schema" : {
+              "$ref" : "#/definitions/ReverseResponse"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Reverse" ],
+        "summary" : "Reverse Geocode",
+        "description" : "The reverse geocoding service allows a latitude and longitude to be converted to a location.",
+        "parameters" : [ {
+          "name" : "key",
+          "in" : "query",
+          "description" : "The Application Key, which is needed to make requests to MapQuest services.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "outFormat",
+          "in" : "query",
+          "description" : "Specifies the format of the response. Defaults to json if not supplied",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "json", "xml", "csv" ]
+        }, {
+          "name" : "callback",
+          "in" : "query",
+          "description" : "A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "The latitude,longitude of the point to reverse geocode",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ReverseRequestBody"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Response",
+            "schema" : {
+              "$ref" : "#/definitions/ReverseResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "ReverseResponse" : {
+      "type" : "object",
+      "properties" : {
+        "info" : {
+          "$ref" : "#/definitions/ReverseResponse_info"
+        },
+        "options" : {
+          "$ref" : "#/definitions/ReverseResponse_options"
+        },
+        "results" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ReverseResult"
+          }
+        }
+      }
+    },
+    "ReverseResult" : {
+      "type" : "object",
+      "properties" : {
+        "providedLocation" : {
+          "$ref" : "#/definitions/ReverseResult_providedLocation"
+        },
+        "locations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Location"
+          }
+        }
+      }
+    },
+    "AddressResponse" : {
+      "type" : "object",
+      "properties" : {
+        "info" : {
+          "$ref" : "#/definitions/ReverseResponse_info"
+        },
+        "options" : {
+          "$ref" : "#/definitions/ReverseResponse_options"
+        },
+        "results" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/AddressResult"
+          }
+        }
+      }
+    },
+    "AddressResult" : {
+      "type" : "object",
+      "properties" : {
+        "providedLocation" : {
+          "$ref" : "#/definitions/AddressResult_providedLocation"
+        },
+        "locations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Location"
+          }
+        }
+      }
+    },
+    "Location" : {
+      "type" : "object",
+      "properties" : {
+        "street" : {
+          "type" : "string"
+        },
+        "adminArea6" : {
+          "type" : "string"
+        },
+        "adminArea6Type" : {
+          "type" : "string"
+        },
+        "adminArea5" : {
+          "type" : "string"
+        },
+        "adminArea5Type" : {
+          "type" : "string"
+        },
+        "adminArea4" : {
+          "type" : "string"
+        },
+        "adminArea4Type" : {
+          "type" : "string"
+        },
+        "adminArea3" : {
+          "type" : "string"
+        },
+        "adminArea3Type" : {
+          "type" : "string"
+        },
+        "adminArea1" : {
+          "type" : "string"
+        },
+        "adminArea1Type" : {
+          "type" : "string"
+        },
+        "postalCode" : {
+          "type" : "string"
+        },
+        "geocodeQualityCode" : {
+          "type" : "string"
+        },
+        "geocodeQuality" : {
+          "type" : "string"
+        },
+        "dragPoint" : {
+          "type" : "boolean"
+        },
+        "sideOfStreet" : {
+          "type" : "string"
+        },
+        "linkId" : {
+          "type" : "string"
+        },
+        "unknownInput" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "latLng" : {
+          "$ref" : "#/definitions/ReverseResult_providedLocation_latLng"
+        },
+        "displayLatLng" : {
+          "$ref" : "#/definitions/ReverseResult_providedLocation_latLng"
+        },
+        "mapUrl" : {
+          "type" : "string"
+        }
+      }
+    },
+    "AddressRequestBody" : {
+      "type" : "object",
+      "properties" : {
+        "location" : {
+          "type" : "string"
+        },
+        "options" : {
+          "$ref" : "#/definitions/AddressRequestBodyOptions"
+        }
+      }
+    },
+    "AddressRequestBodyOptions" : {
+      "type" : "object",
+      "properties" : {
+        "boundingBox" : {
+          "type" : "string"
+        },
+        "ignoreLatLngInput" : {
+          "type" : "boolean"
+        },
+        "thumbMaps" : {
+          "type" : "boolean"
+        },
+        "maxResults" : {
+          "type" : "integer"
+        },
+        "delimiter" : {
+          "type" : "string"
+        },
+        "intlMode" : {
+          "type" : "string"
+        }
+      }
+    },
+    "ReverseRequestBody" : {
+      "type" : "object",
+      "properties" : {
+        "location" : {
+          "$ref" : "#/definitions/ReverseRequestBody_location"
+        }
+      }
+    },
+    "ReverseRequestBodyOptions" : {
+      "type" : "object",
+      "properties" : {
+        "thumbMaps" : {
+          "type" : "boolean"
+        },
+        "delimiter" : {
+          "type" : "string"
+        }
+      }
+    },
+    "BatchRequestBody" : {
+      "type" : "object",
+      "properties" : {
+        "locations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/BatchLocation"
+          }
+        },
+        "options" : {
+          "$ref" : "#/definitions/BatchRequestBodyOptions"
+        }
+      }
+    },
+    "BatchLocation" : {
+      "type" : "object",
+      "properties" : {
+        "city" : {
+          "type" : "string"
+        },
+        "state" : {
+          "type" : "string"
+        }
+      }
+    },
+    "BatchRequestBodyOptions" : {
+      "type" : "object",
+      "properties" : {
+        "ignoreLatLngInput" : {
+          "type" : "boolean"
+        },
+        "thumbMaps" : {
+          "type" : "boolean"
+        },
+        "maxResults" : {
+          "type" : "integer"
+        },
+        "delimiter" : {
+          "type" : "string"
+        }
+      }
+    },
+    "ReverseResponse_info_copyright" : {
+      "properties" : {
+        "text" : {
+          "type" : "string"
+        },
+        "imageUrl" : {
+          "type" : "string"
+        },
+        "imageAltText" : {
+          "type" : "string"
+        }
+      }
+    },
+    "ReverseResponse_info" : {
+      "properties" : {
+        "statuscode" : {
+          "type" : "number",
+          "format" : "integer"
+        },
+        "copyright" : {
+          "$ref" : "#/definitions/ReverseResponse_info_copyright"
+        },
+        "messages" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "ReverseResponse_options" : {
+      "properties" : {
+        "maxResults" : {
+          "type" : "number",
+          "format" : "integer"
+        },
+        "thumbMaps" : {
+          "type" : "boolean"
+        },
+        "ignoreLatLngInput" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "ReverseResult_providedLocation_latLng" : {
+      "properties" : {
+        "lat" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "lng" : {
+          "type" : "number",
+          "format" : "double"
+        }
+      }
+    },
+    "ReverseResult_providedLocation" : {
+      "properties" : {
+        "latLng" : {
+          "$ref" : "#/definitions/ReverseResult_providedLocation_latLng"
+        }
+      }
+    },
+    "AddressResult_providedLocation" : {
+      "properties" : {
+        "location" : {
+          "type" : "string"
+        }
+      }
+    },
+    "ReverseRequestBody_location" : {
+      "properties" : {
+        "latLng" : {
+          "$ref" : "#/definitions/ReverseResult_providedLocation_latLng"
+        },
+        "options" : {
+          "$ref" : "#/definitions/ReverseRequestBodyOptions"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,558 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: MapQuest Geocoding API
+  description: Services for forward and reverse geocoding
+  version: "v1"
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+produces:
+  - application/json
+paths:
+  /address:
+    get:
+      summary: Address Geocode
+      description: The address geocoding service enables you to take an address and get the associated latitude and longitude.
+      parameters:
+        - name: key
+          description: The Application Key, which is needed to make requests to MapQuest services.
+          in: query
+          required: false
+          type: string
+        - name: location
+          description: The location to geocode
+          in: query
+          required: true
+          type: string
+        - name: boundingBox
+          description: "When using batch geocoding or when ambiguous results are returned, any results within the provided bounding box will be moved to the top of the results list. Bounding box format is: upper left latitude, upper left longitude, lower right latitude, lower right longitude."
+          in: query
+          required: false
+          type: string
+        - name: ignoreLatLngInput
+          description: This option tells the service whether it should fail when given a latitude/longitude pair in an address or batch geocode call, or if it should ignore that and try and geocode what it can. Default = false.
+          in: query
+          required: false
+          type: boolean
+        - name: thumbMaps
+          description: This parameter tells the service whether it should return a URL to a static map thumbnail image for a location being geocoded. Default = true.
+          in: query
+          required: false
+          type: boolean
+        - name: maxResults
+          description: The max number of locations to return from the batch geocode
+          in: query
+          required: false
+          type: integer
+        - name: outFormat
+          description: Specifies the format of the response. Defaults to json if not supplied
+          in: query
+          required: false
+          type: string
+          enum:
+            - json
+            - xml
+            - csv
+        - name: delimiter
+          description: Specifies the delimiter used in the csv response. Default is none. This option will only have an effect if outFormat=csv.
+          in: query
+          required: false
+          type: string
+          enum:
+            - Comma
+            - Pipe
+            - Colon
+            - Semicolon
+        - name: intlMode
+          description: Allows users of the International Geocoder to tell MapQuest how to handle a 5-box geocode. Default = AUTO.
+          in: query
+          required: false
+          type: string
+          enum:
+            - 5BOX
+            - 1BOX
+            - AUTO
+        - name: callback
+          description: A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.
+          in: query
+          required: false
+          type: string
+      tags:
+        - Address
+      responses:
+        200:
+          description: Response
+          schema:
+            $ref: '#/definitions/AddressResponse'
+    post:
+      summary: Address Geocode
+      description: The address geocoding service enables you to take an address and get the associated latitude and longitude.
+      parameters:
+        - name: key
+          description: The Application Key, which is needed to make requests to MapQuest services.
+          in: query
+          required: false
+          type: string
+        - name: outFormat
+          description: Specifies the format of the response. Defaults to json if not supplied
+          in: query
+          required: false
+          type: string
+          enum:
+            - json
+            - xml
+            - csv
+        - name: callback
+          description: A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.
+          in: query
+          required: false
+          type: string
+        - name: body
+          description: The location to geocode
+          in: body
+          schema:
+            $ref: '#/definitions/AddressRequestBody'
+          required: true
+      tags:
+        - Address
+      responses:
+        200:
+          description: Response
+          schema:
+            $ref: '#/definitions/AddressResponse'
+  /reverse:
+    get:
+      summary: Reverse Geocode
+      description: The reverse geocoding service allows a latitude and longitude to be converted to a location.
+      parameters:
+        - name: key
+          description: The Application Key, which is needed to make requests to MapQuest services.
+          in: query
+          required: false
+          type: string
+        - name: location
+          in: query
+          description: The latitude,longitude of the point to reverse geocode
+          required: true
+          type: string
+        - name: thumbMaps
+          description: This parameter tells the service whether it should return a URL to a static map thumbnail image for a location being geocoded. Default = true.
+          in: query
+          required: false
+          type: boolean
+        - name: outFormat
+          description: Specifies the format of the response. Defaults to json if not supplied
+          in: query
+          required: false
+          type: string
+          enum:
+            - json
+            - xml
+            - csv
+        - name: delimiter
+          description: Specifies the delimiter used in the csv response. Default is none. This option will only have an effect if outFormat=csv.
+          in: query
+          required: false
+          type: string
+          enum:
+            - Comma
+            - Pipe
+            - Colon
+            - Semicolon
+        - name: callback
+          description: A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.
+          in: query
+          required: false
+          type: string
+      tags:
+        - Reverse
+      responses:
+        200:
+          description: Response
+          schema:
+            $ref: '#/definitions/ReverseResponse'
+    post:
+      summary: Reverse Geocode
+      description: The reverse geocoding service allows a latitude and longitude to be converted to a location.
+      parameters:
+        - name: key
+          description: The Application Key, which is needed to make requests to MapQuest services.
+          in: query
+          required: false
+          type: string
+        - name: outFormat
+          description: Specifies the format of the response. Defaults to json if not supplied
+          in: query
+          required: false
+          type: string
+          enum:
+            - json
+            - xml
+            - csv
+        - name: callback
+          description: A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.
+          in: query
+          required: false
+          type: string
+        - name: body
+          description: The latitude,longitude of the point to reverse geocode
+          in: body
+          schema:
+            $ref: '#/definitions/ReverseRequestBody'
+          required: true
+      tags:
+        - Reverse
+      responses:
+        200:
+          description: Response
+          schema:
+            $ref: '#/definitions/ReverseResponse'
+  /batch:
+    get:
+      summary: Batch Geocode
+      description: The batch geocoding service allows multiple locations to be geocoded at the same time.
+      parameters:
+        - name: key
+          description: The Application Key, which is needed to make requests to MapQuest services.
+          in: query
+          required: false
+          type: string
+        - name: location
+          description: The location to geocode. A limit of 100 locations exists for one call.
+          in: query
+          required: true
+          type: string
+        - name: boundingBox
+          description: "When using batch geocoding or when ambiguous results are returned, any results within the provided bounding box will be moved to the top of the results list. Bounding box format is: upper left latitude, upper left longitude, lower right latitude, lower right longitude."
+          in: query
+          required: false
+          type: string
+        - name: ignoreLatLngInput
+          description: This option tells the service whether it should fail when given a latitude/longitude pair in an address or batch geocode call, or if it should ignore that and try and geocode what it can. Default = false.
+          in: query
+          required: false
+          type: boolean
+        - name: thumbMaps
+          description: This parameter tells the service whether it should return a URL to a static map thumbnail image for a location being geocoded. Default = true.
+          in: query
+          required: false
+          type: boolean
+        - name: maxResults
+          description: The max number of locations to return from the batch geocode
+          in: query
+          required: false
+          type: integer
+        - name: outFormat
+          description: Specifies the format of the response. Defaults to json if not supplied
+          in: query
+          required: false
+          type: string
+          enum:
+            - json
+            - xml
+            - csv
+        - name: delimiter
+          description: Specifies the delimiter used in the csv response. Default is none. This option will only have an effect if outFormat=csv.
+          in: query
+          required: false
+          type: string
+          enum:
+            - Comma
+            - Pipe
+            - Colon
+            - Semicolon
+        - name: callback
+          description: A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.
+          in: query
+          required: false
+          type: string
+      tags:
+        - Batch
+      responses:
+        200:
+          description: Response
+          schema:
+            $ref: '#/definitions/AddressResponse'
+    post:
+      summary: Batch Geocode
+      description: The batch geocoding service allows multiple locations to be geocoded at the same time.
+      parameters:
+        - name: key
+          description: The Application Key, which is needed to make requests to MapQuest services.
+          in: query
+          required: false
+          type: string
+        - name: boundingBox
+          description: "When using batch geocoding or when ambiguous results are returned, any results within the provided bounding box will be moved to the top of the results list. Bounding box format is: upper left latitude, upper left longitude, lower right latitude, lower right longitude."
+          in: query
+          required: false
+          type: string
+        - name: outFormat
+          description: Specifies the format of the response. Defaults to json if not supplied
+          in: query
+          required: false
+          type: string
+          enum:
+            - json
+            - xml
+            - csv
+        - name: callback
+          description: A JavaScript function name. The JSON-formatted response will be wrapped in a call to the supplied callback function name to provide JSONP functionality. This functionality might be needed to do cross-site scripting. See the Wikipedia.org entry for JSON for more details.
+          in: query
+          required: false
+          type: string
+        - name: body
+          description: The list of locations to geocode
+          in: body
+          schema:
+            $ref: '#/definitions/BatchRequestBody'
+          required: true
+      tags:
+        - Batch
+      responses:
+        200:
+          description: Response
+          schema:
+            $ref: '#/definitions/AddressResponse'
+definitions:
+  ReverseResponse:
+    type: object
+    properties:
+      info:
+        type: object
+        properties:
+          statuscode:
+            type: number
+            format: integer
+          copyright:
+            type: object
+            properties:
+              text:
+                type: string
+              imageUrl:
+                type: string
+              imageAltText:
+                type: string
+          messages:
+            type: array
+            items:
+              type: string
+      options:
+        type: object
+        properties:
+          maxResults:
+            type: number
+            format: integer
+          thumbMaps:
+            type: boolean
+          ignoreLatLngInput:
+            type: boolean
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/ReverseResult'
+  ReverseResult:
+    type: object
+    properties:
+      providedLocation:
+        type: object
+        properties:
+          latLng:
+            type: object
+            properties:
+              lat:
+                type: number
+                format: double
+              lng:
+                type: number
+                format: double
+      locations:
+        type: array
+        items:
+          $ref: '#/definitions/Location'
+  AddressResponse:
+    type: object
+    properties:
+      info:
+        type: object
+        properties:
+          statuscode:
+            type: number
+            format: integer
+          copyright:
+            type: object
+            properties:
+              text:
+                type: string
+              imageUrl:
+                type: string
+              imageAltText:
+                type: string
+          messages:
+            type: array
+            items:
+              type: string
+      options:
+        type: object
+        properties:
+          maxResults:
+            type: number
+            format: integer
+          thumbMaps:
+            type: boolean
+          ignoreLatLngInput:
+            type: boolean
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/AddressResult'
+  AddressResult:
+    type: object
+    properties:
+      providedLocation:
+        type: object
+        properties:
+          location:
+            type: string
+      locations:
+        type: array
+        items:
+          $ref: '#/definitions/Location'
+  Location:
+    type: object
+    properties:
+      street:
+        type: string
+      adminArea6:
+        type: string
+      adminArea6Type:
+        type: string
+      adminArea5:
+        type: string
+      adminArea5Type:
+        type: string
+      adminArea4:
+        type: string
+      adminArea4Type:
+        type: string
+      adminArea3:
+        type: string
+      adminArea3Type:
+        type: string
+      adminArea1:
+        type: string
+      adminArea1Type:
+        type: string
+      postalCode:
+        type: string
+      geocodeQualityCode:
+        type: string
+      geocodeQuality:
+        type: string
+      dragPoint:
+        type: boolean
+      sideOfStreet:
+        type: string
+      linkId:
+        type: string
+      unknownInput:
+        type: string
+      type:
+        type: string
+      latLng:
+        type: object
+        properties:
+          lat:
+            type: number
+            format: double
+          lng:
+            type: number
+            format: double
+      displayLatLng:
+        type: object
+        properties:
+          lat:
+            type: number
+            format: double
+          lng:
+            type: number
+            format: double
+      mapUrl:
+        type: string
+  AddressRequestBody:
+    type: object
+    properties:
+      location:
+        type: string
+      options:
+        $ref: '#/definitions/AddressRequestBodyOptions'
+  AddressRequestBodyOptions:
+    type: object
+    properties:
+      boundingBox:
+        type: string
+      ignoreLatLngInput:
+        type: boolean
+      thumbMaps:
+        type: boolean
+      maxResults:
+        type: integer
+      delimiter:
+        type: string
+      intlMode:
+        type: string
+  ReverseRequestBody:
+    type: object
+    properties:
+      location:
+        type: object
+        properties:
+          latLng:
+            type: object
+            properties:
+              lat:
+                type: number
+                format: double
+              lng:
+                type: number
+                format: double
+          options:
+            $ref: '#/definitions/ReverseRequestBodyOptions'
+  ReverseRequestBodyOptions:
+    type: object
+    properties:
+      thumbMaps:
+        type: boolean
+      delimiter:
+        type: string
+  BatchRequestBody:
+    type: object
+    properties:
+      locations:
+        type: array
+        items:
+          $ref: '#/definitions/BatchLocation'
+      options:
+        $ref: '#/definitions/BatchRequestBodyOptions'
+  BatchLocation:
+    type: object
+    properties:
+      city:
+        type: string
+      state:
+        type: string
+  BatchRequestBodyOptions:
+    type: object
+    properties:
+      ignoreLatLngInput:
+        type: boolean
+      thumbMaps:
+        type: boolean
+      maxResults:
+        type: integer
+      delimiter:
+        type: string
+  
