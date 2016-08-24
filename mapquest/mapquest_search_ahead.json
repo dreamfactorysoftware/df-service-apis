@@ -1,0 +1,289 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "MapQuest Search API: Predictive Search",
+		"description": "A spatially-aware predictive search engine",
+		"version": "3.0.0"
+	},
+	"produces": [
+		"application/json"
+	],
+	"paths": {
+		"/prediction": {
+			"get": {
+				"summary": "Search using a geospatial context and a partial query phrase.",
+				"description": "Get a list of search results matching a possibly-incomplete query phrase, scored and ordered based on a spatial reference point.\n",
+				"parameters": [
+					{
+						"name": "collection",
+						"in": "query",
+						"description": "The collections to search over. Currently \"address\", \"adminArea\", and \"airport\" are supported. Accepts multiple instances of the parameter and or a comma-delimited list.",
+						"required": true,
+						"type": "array",
+						"items": {
+							"type": "string",
+							"collectionFormat": "csv"
+						},
+						"minItems": 1
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"description": "The maximum number of results to return. Must lie in the range [1, 15]. Default if unspecified: 10.",
+						"required": false,
+						"type": "integer",
+						"minimum": 1,
+						"maximum": 15,
+						"default": 10
+					},
+					{
+						"name": "q",
+						"in": "query",
+						"description": "A query phrase. The phrase can be incomplete, in which case its last term is treated as a prefix during matching. Address queries must begin with a street number. Minimum length: 2 characters. Maximum length: 100 characters.",
+						"required": true,
+						"type": "string",
+						"minLength": 2,
+						"maxLength": 100
+					},
+					{
+						"name": "location",
+						"in": "query",
+						"description": "The geographic context used for searching, ranking, and ordering results. Supports a point defining the geographic \"center\" of the query. Must consist of two comma-separated floating-point values: the longitude, latitude; the first coordinate must lie in the range [-180, 180], and the second must lie in the range [-90, 90]. While this parameter is not required, it is highly recommended that it be provided in order to improve relevance of results.",
+						"required": false,
+						"type": "array",
+						"items": {
+							"type": "number",
+							"collectionFormat": "csv"
+						}
+					},
+					{
+						"name": "countryCode",
+						"in": "query",
+						"description": "The countries to search over. Can contain any valid ISO 3166-1 Alpha-2 country codes. If provided, the search will only return results in the specified countries. Accepts multiple instances of the parameter and or a comma-delimited list.",
+						"required": false,
+						"type": "array",
+						"items": {
+							"type": "string",
+							"collectionFormat": "csv"
+						}
+					},
+					{
+						"name": "key",
+						"in": "query",
+						"description": "A valid and authorized MapQuest API key.",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"tags": [
+					"prediction"
+				],
+				"responses": {
+					"200": {
+						"description": "An object containing a list of search results, plus an echoed version of the request.",
+						"schema": {
+							"$ref": "#/definitions/SearchAheadResponse"
+						}
+					},
+					"400": {
+						"description": "An error condition, characterized by an appropriate HTTP status code and a descriptive message.",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					},
+					"500": {
+						"description": "An error condition, characterized by an appropriate HTTP status code and a descriptive message.",
+						"schema": {
+							"$ref": "#/definitions/Error"
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"SearchAheadAddressProperties": {
+			"type": "object",
+			"description": "A JSON object containing the address properties for this object.",
+			"required": [
+				"type",
+				"countryCode"
+			],
+			"properties": {
+				"type": {
+					"type": "string",
+					"description": "The type of address entity; possible values are \"country\", \"state\", \"county\", \"city\", \"neighborhood\", \"postalCode\", \"address\"."
+				},
+				"country": {
+					"type": "string",
+					"description": "The enclosing country of this location, if applicable."
+				},
+				"countryCode": {
+					"type": "string",
+					"description": "The country code of the enclosing country of this location."
+				},
+				"state": {
+					"type": "string",
+					"description": "The enclosing state or province of this location, if applicable."
+				},
+				"stateCode": {
+					"type": "string",
+					"description": "The state code of the enclosing state or province of this location, if applicable."
+				},
+				"county": {
+					"type": "string",
+					"description": "The enclosing county, parish, borough, or similar, if applicable."
+				},
+				"city": {
+					"type": "string",
+					"description": "The enclosing city, if applicable."
+				},
+				"neighborhood": {
+					"type": "string",
+					"description": "The enclosing neighborhood, if applicable."
+				},
+				"postalCode": {
+					"type": "string",
+					"description": "The coarsest enclosing postal code, if applicable."
+				}
+			}
+		},
+		"SearchAheadPlace": {
+			"type": "object",
+			"description": "A GeoJSON Feature object describing the returned place.",
+			"required": [
+				"geometry",
+				"properties",
+				"type"
+			],
+			"properties": {
+				"geometry": {
+					"type": "object",
+					"description": "A GeoJSON Geometry object representing this object geographically."
+				},
+				"properties": {
+					"$ref": "#/definitions/SearchAheadAddressProperties"
+				},
+				"type": {
+					"type": "string",
+					"description": "The GeoJSON type of this object."
+				}
+			}
+		},
+		"SearchAheadRequest": {
+			"type": "object",
+			"required": [
+				"q",
+				"collection"
+			],
+			"properties": {
+				"q": {
+					"type": "string",
+					"description": "The input query phrase."
+				},
+				"limit": {
+					"type": "integer",
+					"description": "The input value of limit."
+				},
+				"location": {
+					"type": "object",
+					"required": [
+						"longitude",
+						"latitude"
+					],
+					"properties": {
+						"longitude": {
+							"type": "number",
+							"format": "double",
+							"description": "Longitude"
+						},
+						"latitude": {
+							"type": "number",
+							"format": "double",
+							"description": "Latitude"
+						}
+					},
+					"description": "The input value of location, parsed as a longitude, latitude."
+				},
+				"collection": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"description": "The requested set of collections to search over."
+				},
+				"countryCode": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"description": "The requested set of country codes to search over."
+				}
+			}
+		},
+		"SearchAheadItem": {
+			"type": "object",
+			"required": [
+				"displayString",
+				"recordType",
+				"collection",
+				"language"
+			],
+			"properties": {
+				"displayString": {
+					"type": "string",
+					"description": "The displayable name for the record."
+				},
+				"recordType": {
+					"type": "string",
+					"description": "The type of the returned record; possible values are \"country\", \"state\", \"county\", \"city\", \"neighborhood\", \"postalCode\", \"address\", and \"airport\"."
+				},
+				"collection": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"description": "The collections of the returned record; possible values are \"address\", \"adminArea\", and \"airport\"."
+				},
+				"slug": {
+					"type": "string",
+					"description": "A path fragment for accessing the item on mapquest.com."
+				},
+				"language": {
+					"type": "string",
+					"description": "The ISO 639-1 language code for the record."
+				},
+				"place": {
+					"$ref": "#/definitions/SearchAheadPlace"
+				}
+			}
+		},
+		"SearchAheadResponse": {
+			"type": "object",
+			"required": [
+				"request",
+				"results"
+			],
+			"properties": {
+				"request": {
+					"$ref": "#/definitions/SearchAheadRequest"
+				},
+				"results": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/SearchAheadItem"
+					}
+				}
+			}
+		},
+		"Error": {
+			"type": "object",
+			"properties": {
+				"error": {
+					"type": "string",
+					"description": "A string describing the error that occurred."
+				}
+			}
+		}
+	}
+}
