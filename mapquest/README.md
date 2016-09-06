@@ -1,5 +1,4 @@
-# df-mapquest
-Create DreamFactory services for accessing MapQuest APIs
+# Create DreamFactory services for accessing MapQuest APIs
 
 The purpose of this repo is to help you quickly get up and running using DreamFactory to access MapQuest APIs. This repo contains Swagger 2.0 service definitions for the MapQuest geocoding and search-ahead APIs. Adding these as services to your DreamFactory instance allows you to call and manage MapQuest APIs using DreamFactory’s REST API.  DreamFactory provides user and role management, so you can easily limit which users have access to which services. You can also add pre and post-processing scripts to any endpoint using V8js, Node.js, PHP, or Python. Please visit the [wiki](http://wiki.dreamfactory.com/Main_Page) for answers to common questions such as how to authenticate and make API calls.
 
