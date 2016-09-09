@@ -20,7 +20,7 @@
 	"paths": {
 		"/Accounts/{AccountSid}{mediaTypeExtension}": {
 			"get": {
-				"summary": "Get Acount",
+				"summary": "Get Account",
 				"description": "Returns a representation of an account.",
 				"operationId": "returns-a-representation-of-an-account",
 				"parameters": [
@@ -60,7 +60,7 @@
 					{
 						"in": "path",
 						"name": "mediaTypeExtension",
-						"description": "By default, Twilios REST API returns XML. You may obtain CSV, JSON or HTML by appending .csv, .json, or .html.n",
+						"description": "By default, Twilios REST API returns XML. You may obtain CSV, JSON or HTML by appending .csv, .json, or .html",
 						"type": "string"
 					}
 				],
@@ -103,8 +103,8 @@
 		},
 		"/Accounts{mediaTypeExtension}": {
 			"get": {
-				"summary": "Get Acount",
-				"description": "Retrieve a list of the Account resources belonging to the account used to make thenAPI request. This list will include that Account as well.n",
+				"summary": "Get Account",
+				"description": "Retrieve a list of the Account resources belonging to the account used to make the API request. This list will include that Account as well.n",
 				"operationId": "retrieve-a-list-of-the-account-resources-belonging-to-the-account-used-to-make-theapi-request-this-l",
 				"parameters": [
 					{
