@@ -1,0 +1,28 @@
+repo_name: dreamfactorysoftware/df-service-apis
+report_id: 9a01393d661ead0ad8a76445addfe8cb
+repo_type: Public
+timestamp: '2023-12-06T22:37:25+00:00'
+requested_by: benbusse
+provider: github
+branch: master
+detected_tools_count: 2
+tools:
+- name: JavaScript
+  description: Lightweight, interpreted, object-oriented language with first-class
+    functions
+  website_url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/1209/javascript.jpeg
+  detection_source: Repo Metadata
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source: Repo Metadata
